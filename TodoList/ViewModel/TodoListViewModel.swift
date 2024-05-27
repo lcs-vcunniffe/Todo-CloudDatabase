@@ -14,6 +14,9 @@ class TodoListViewModel {
     // The list of to-do items
     var todos: [TodoItem]
     
+    // Track when to-do items are initially being fetched
+    var fetchingTodos: Bool = false
+    
     // MARK: Initializer(s)
     init(todos: [TodoItem] = []) {
         self.todos = todos
@@ -25,21 +28,27 @@ class TodoListViewModel {
     // MARK: Functions
     func getTodos() async throws {
             
-            do {
-                let results: [TodoItem] = try await supabase
-                    .from("todos")
-                    .select()
-                    .order("id", ascending: true)
-                    .execute()
-                    .value
-                
-                self.todos = results
-                
-            } catch {
-                debugPrint(error)
-            }
+        // Indicate that the app is in the process of getting to-dos from the cloud
+        fetchingTodos = true
+        
+        do {
+            let results: [TodoItem] = try await supabase
+                .from("todos")
+                .select()
+                .order("id", ascending: true)
+                .execute()
+                .value
             
+            self.todos = results
+            
+            // Finished getting to-do items
+            fetchingTodos = false
+            
+        } catch {
+            debugPrint(error)
         }
+        
+    }
     
     func createToDo(withTitle title: String) {
         
