@@ -68,7 +68,7 @@ struct LandingView: View {
             .navigationTitle("To do")
             // Show the sheet to add a new to-do item
             .sheet(isPresented: $presentingNewItemSheet) {
-                Text(/*@START_MENU_TOKEN@*/"Placeholder"/*@END_MENU_TOKEN@*/)
+                NewItemView(showSheet: $presentingNewItemSheet)
                     .presentationDetents([.fraction(0.15)])
             }
             // Add a tool bar to the top of the interface
