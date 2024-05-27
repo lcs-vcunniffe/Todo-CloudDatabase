@@ -10,10 +10,7 @@ import SwiftUI
 struct LandingView: View {
     
     // MARK: Stored properties
-    
-    // The item currently being added
-    @State var newItemDescription = ""
-    
+        
     // The search text
     @State var searchText = ""
     
@@ -50,20 +47,6 @@ struct LandingView: View {
                         try await viewModel.filterTodos(on: searchText)
                     }
                 }
-                
-                HStack {
-                    TextField("Enter a to-do item", text: $newItemDescription)
-                    
-                    Button("ADD") {
-                        // Add the new to-do item
-                        viewModel.createToDo(withTitle: newItemDescription)
-                        newItemDescription = ""
-                    }
-                    .font(.caption)
-                    .disabled(newItemDescription.trimmingCharacters(in: .whitespaces).isEmpty == true)
-                }
-                .padding(20)
-                
             }
             .navigationTitle("To do")
             // Show the sheet to add a new to-do item
